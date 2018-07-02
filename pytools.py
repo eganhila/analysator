@@ -1,5 +1,5 @@
 import analysator.filemanagement as filemanagement
-import filemanagement
+#import filemanagement
 import socket, re
 
 # Input current folder's path

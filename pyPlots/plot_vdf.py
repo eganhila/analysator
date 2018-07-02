@@ -367,7 +367,7 @@ def plot_vdf(filename=None,
     if title==None:        
         if timeval == None:    
             plot_title = ''
-            print "Unknown time format encountered"
+            print("Unknown time format encountered")
         else:
             plot_title = "t="+str(np.int(timeval))+' s'
     else:

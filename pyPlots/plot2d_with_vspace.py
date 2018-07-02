@@ -48,7 +48,7 @@ def vlsv_plot2d_with_vspace(vlsvReader,varName="rho",withDistr=0,Nstride=97,Nbin
   plane = "xz"
   meshX,meshY = np.meshgrid(np.linspace(xmin/lengthUnit,xmax/lengthUnit,nx),np.linspace(zmin/lengthUnit,zmax/lengthUnit,nz))
  else:
-  print "Error: cannot determine simulation plane"
+  print("Error: cannot determine simulation plane")
   return
  # cell id - index  dict
  locs = vlsvReader.get_cellid_locations()
@@ -57,7 +57,7 @@ def vlsv_plot2d_with_vspace(vlsvReader,varName="rho",withDistr=0,Nstride=97,Nbin
  if varName in vlsvReader.get_all_variables():
   var = vlsvReader.read_variable(varName)
  else:
-  print "Variable " + varName + " not found"
+  print("Variable " + varName + " not found")
   return
  # sort variable array according to cell ids
  locs_sorted = sorted(locs.iteritems(), key=oper.itemgetter(0))
@@ -95,7 +95,7 @@ def vlsv_plot2d_with_vspace(vlsvReader,varName="rho",withDistr=0,Nstride=97,Nbin
  xfigsize = xfig1-xfig0
  yfigsize = yfig1-yfig0
  if vlsvReader.check_variable("fSaved") == False:
-  print "Error: Variable fSaved not found"
+  print("Error: Variable fSaved not found")
   return
  cids_with_vel = ()
  n=0
@@ -123,7 +123,7 @@ def vlsv_plot2d_with_vspace(vlsvReader,varName="rho",withDistr=0,Nstride=97,Nbin
     continue
    xsub = xfig0 + xfigsize*(x-xmin)/xsize
    ysub = yfig0 + yfigsize*(z-zmin)/zsize
-   print "Subplot " +  str(n) + "/" + str(len(Cloop)) + ": fig crds = " + str(xsub) + ", " + str(ysub)
+   print("Subplot " +  str(n) + "/" + str(len(Cloop)) + ": fig crds = " + str(xsub) + ", " + str(ysub))
    ax = plt.axes([xsub,ysub,xFigSizeDistr,yFigSizeDistr])
    ax.hist(Ekin,bins=Nbins,weights=f,normed=1,log=1,color='r',edgecolor='none',range=distrMinMax)
    ax.xaxis.set_major_locator(plt.NullLocator())

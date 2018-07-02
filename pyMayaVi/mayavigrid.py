@@ -464,7 +464,7 @@ class MayaviGrid(HasTraits):
          # Read cell ids with velocity distribution in:
          cell_candidates = self.vlsvReader.read(mesh = "SpatialGrid", tag = "CELLSWITHBLOCKS")
          if len(cell_candidates) == 0:
-            print "No velocity distribution data found in this file!"
+            print("No velocity distribution data found in this file!")
             return
          # Read in the coordinates of the cells:
          cell_candidate_coordinates = [self.vlsvReader.get_cell_coordinates(cell_candidate) for cell_candidate in cell_candidates]
@@ -515,7 +515,7 @@ class MayaviGrid(HasTraits):
          # Read cell ids with velocity distribution in:
          cell_candidates = self.vlsvReader.read(mesh = "SpatialGrid", tag = "CELLSWITHBLOCKS")
          if len(cell_candidates) == 0:
-            print "No velocity distribution data found in this file!"
+            print("No velocity distribution data found in this file!")
             return
          # Read in the coordinates of the cells:
          cell_candidate_coordinates = [self.vlsvReader.get_cell_coordinates(cell_candidate) for cell_candidate in cell_candidates]
@@ -646,7 +646,7 @@ class MayaviGrid(HasTraits):
       '''
       # Create nodes
       # Get velocity blocks and avgs:
-      print "generating velocity grid for cellid = " + str(cellid) + " and pop = " + pop
+      print("generating velocity grid for cellid = " + str(cellid) + " and pop = " + pop)
       blocksAndAvgs = self.vlsvReader.read_blocks(cellid, pop=pop)
       if len(blocksAndAvgs) == 0:
          print("CELL " + str(cellid) + " HAS NO VELOCITY BLOCK")

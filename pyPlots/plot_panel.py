@@ -215,12 +215,12 @@ def plot_colormap(filename=None,
     if timeval==None:
         timeval=f.read_parameter("t")
     if timeval==None:
-        print "Unknown time format encountered"
+        print("Unknown time format encountered")
 
     # Plot title with time
     if title==None:        
         if timeval == None:    
-            print "Unknown time format encountered"
+            print("Unknown time format encountered")
             plot_title = ''
         else:
             plot_title = "t="+str(np.int(timeval))+' s'

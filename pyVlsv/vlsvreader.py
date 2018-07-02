@@ -156,7 +156,7 @@ class VlsvReader(object):
 
               self.__meshes[popname]=pop
               if os.getenv('PTNONINTERACTIVE') == None:
-                 print "Found population " + popname
+                 print("Found population " + popname)
 
       self.__fptr.close()
 
@@ -266,7 +266,7 @@ class VlsvReader(object):
          fptr.close()
 
       # Check to make sure the sizes match (just some extra debugging)
-      print "data_avgs = " + str(data_avgs) + ", data_block_ids = " + str(data_block_ids)
+      print("data_avgs = " + str(data_avgs) + ", data_block_ids = " + str(data_block_ids))
       if len(data_avgs) != len(data_block_ids):
          print("BAD DATA SIZES")
 
@@ -322,7 +322,7 @@ class VlsvReader(object):
             elif datatype == "uint" and element_size == 8:
                data_block_ids = np.fromfile(fptr, dtype = np.uint64, count = vector_size*num_of_blocks)
             else:
-               print "Error! Bad data type in blocks!"
+               print("Error! Bad data type in blocks!")
                return
 
          if (pop=="avgs") and (child.tag == "BLOCKIDS"): # Old avgs files did not have the name set for BLOCKIDS
@@ -374,7 +374,7 @@ class VlsvReader(object):
    def __set_cell_offset_and_blocks(self, pop="proton"):
       ''' Read blocks per cell and the offset in the velocity space arrays for every cell with blocks into a private dictionary
       '''
-      print "Getting offsets for population " + pop
+      print("Getting offsets for population " + pop)
       if self.__fileindex_for_cellid_blocks.has_key(pop):
          # There's stuff already saved into the dictionary, don't save it again
          return

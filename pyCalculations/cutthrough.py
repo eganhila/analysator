@@ -29,7 +29,7 @@ def get_cellids_coordinates_distances( vlsvReader, xmax, xmin, xcells, ymax, ymi
       # Get the cell id
       cellid = vlsvReader.get_cellid(iterator)
       if cellid == 0:
-         print "ERROR, invalid cell id!"
+         print("ERROR, invalid cell id!")
          return
       # Get the max and min boundaries:
       min_bounds = vlsvReader.get_cell_coordinates(cellid) - 0.5 * cell_lengths
@@ -117,9 +117,9 @@ def cut_through( vlsvReader, point1, point2 ):
 
    # Make sure point1 and point2 are inside bounds
    if vlsvReader.get_cellid(point1) == 0:
-      print "ERROR, POINT1 IN CUT-THROUGH OUT OF BOUNDS!"
+      print("ERROR, POINT1 IN CUT-THROUGH OUT OF BOUNDS!")
    if vlsvReader.get_cellid(point2) == 0:
-      print "ERROR, POINT2 IN CUT-THROUGH OUT OF BOUNDS!"
+      print("ERROR, POINT2 IN CUT-THROUGH OUT OF BOUNDS!")
 
    #Calculate cell lengths:
    cell_lengths = np.array([(xmax - xmin)/(float)(xcells), (ymax - ymin)/(float)(ycells), (zmax - zmin)/(float)(zcells)])
