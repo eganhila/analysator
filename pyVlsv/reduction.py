@@ -304,7 +304,6 @@ def Bz_linedipole_avg( variables ):
 def Bz_linedipole_diff( variables ):
    Bb = variables[0]
    Bzldp = variables[1]
-   print Bzldp.shape
    return np.divide(np.abs(Bb[:,2] - Bzldp), magnitude(Bb))
 
 def gyrophase_relstddev( variables, velocity_cell_data, velocity_coordinates ):

@@ -150,7 +150,7 @@ class VlsvWriter(object):
          child.attrib["vectorsize"] = np.shape(data)[1]
          datatype = str(type(data[0][0]))
       elif len(np.shape(data)) > 2:
-         print "ERROR, np.shape returned len(np.shape(data)) > 2"
+         print("ERROR, np.shape returned len(np.shape(data)) > 2")
          return False
       else:
          child.attrib["vectorsize"] = 1
@@ -164,7 +164,7 @@ class VlsvWriter(object):
       elif 'float' in datatype:
          child.attrib["datatype"] = "float"
       else:
-         print "BAD DATATYPE"
+         print("BAD DATATYPE")
          return False
 
       if '64' in datatype:
@@ -172,7 +172,7 @@ class VlsvWriter(object):
       elif '32' in datatype:
          child.attrib["datasize"] = 4
       else:
-         print "BAD DATASIZE"
+         print("BAD DATASIZE")
          return False
 
       current_offset = fptr.tell()

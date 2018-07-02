@@ -1,4 +1,4 @@
-import filemanagement
+import analysator.filemanagement as filemanagement
 # Input current folder's path
 filemanagement.sys.path.insert(0, filemanagement.os.path.dirname(filemanagement.os.path.abspath(__file__)))
 # Input folder paths
@@ -14,21 +14,21 @@ filemanagement.sys.path.insert(0, filemanagement.os.path.dirname(filemanagement.
 try:
    import calculations
 except ImportError:
-   print "Note: Did not import calculations module"
+   print("Note: Did not import calculations module")
 try:
    import vlsvfile
 except ImportError:
-   print "Note: Did not import vlsvfile module"
+   print("Note: Did not import vlsvfile module")
 try:
    import grid
 except ImportError:
-   print "Note: Did not import grid module"
+   print("Note: Did not import grid module")
 try:
    import plot
 except ImportError:
-   print "Note: Did not import plot module"
+   print("Note: Did not import plot module")
 try:
    import miscellaneous
 except ImportError:
-   print "Note: Did not import miscellaneous"
+   print("Note: Did not import miscellaneous")
 

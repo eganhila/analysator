@@ -12,7 +12,7 @@ class VlsvReader(object):
    ''' Class for reading VLSV files
    ''' 
    file_name=""
-   def __init__(self, file_name):
+   def __init__(self, file_name, use_bbox=True):
       ''' Initializes the vlsv file (opens the file, reads the file footer and reads in some parameters)
 
           :param file_name:     Name of the vlsv file
@@ -32,41 +32,42 @@ class VlsvReader(object):
 
       meshName="SpatialGrid"
       bbox = self.read(tag="MESH_BBOX", mesh=meshName)
-      if bbox is None:
-         #read in older vlsv files where the mesh is defined with parameters
-         self.__xcells = (int)(self.read_parameter("xcells_ini"))
-         self.__ycells = (int)(self.read_parameter("ycells_ini"))
-         self.__zcells = (int)(self.read_parameter("zcells_ini"))
-         self.__xblock_size = 1
-         self.__yblock_size = 1
-         self.__zblock_size = 1
-         self.__xmin = self.read_parameter("xmin")
-         self.__ymin = self.read_parameter("ymin")
-         self.__zmin = self.read_parameter("zmin")
-         self.__xmax = self.read_parameter("xmax")
-         self.__ymax = self.read_parameter("ymax")
-         self.__zmax = self.read_parameter("zmax")
-      else:
-         #new style vlsv file with 
-         nodeCoordinatesX = self.read(tag="MESH_NODE_CRDS_X", mesh=meshName)   
-         nodeCoordinatesY = self.read(tag="MESH_NODE_CRDS_Y", mesh=meshName)   
-         nodeCoordinatesZ = self.read(tag="MESH_NODE_CRDS_Z", mesh=meshName)   
-         self.__xcells = bbox[0]
-         self.__ycells = bbox[1]
-         self.__zcells = bbox[2]
-         self.__xblock_size = bbox[3]
-         self.__yblock_size = bbox[4]
-         self.__zblock_size = bbox[5]
-         self.__xmin = nodeCoordinatesX[0]
-         self.__ymin = nodeCoordinatesY[0]
-         self.__zmin = nodeCoordinatesZ[0]
-         self.__xmax = nodeCoordinatesX[-1]
-         self.__ymax = nodeCoordinatesY[-1]
-         self.__zmax = nodeCoordinatesZ[-1]
+      if use_bbox:
+          if bbox is None:
+             #read in older vlsv files where the mesh is defined with parameters
+             self.__xcells = (int)(self.read_parameter("xcells_ini"))
+             self.__ycells = (int)(self.read_parameter("ycells_ini"))
+             self.__zcells = (int)(self.read_parameter("zcells_ini"))
+             self.__xblock_size = 1
+             self.__yblock_size = 1
+             self.__zblock_size = 1
+             self.__xmin = self.read_parameter("xmin")
+             self.__ymin = self.read_parameter("ymin")
+             self.__zmin = self.read_parameter("zmin")
+             self.__xmax = self.read_parameter("xmax")
+             self.__ymax = self.read_parameter("ymax")
+             self.__zmax = self.read_parameter("zmax")
+          else:
+             #new style vlsv file with 
+             nodeCoordinatesX = self.read(tag="MESH_NODE_CRDS_X", mesh=meshName)   
+             nodeCoordinatesY = self.read(tag="MESH_NODE_CRDS_Y", mesh=meshName)   
+             nodeCoordinatesZ = self.read(tag="MESH_NODE_CRDS_Z", mesh=meshName)   
+             self.__xcells = bbox[0]
+             self.__ycells = bbox[1]
+             self.__zcells = bbox[2]
+             self.__xblock_size = bbox[3]
+             self.__yblock_size = bbox[4]
+             self.__zblock_size = bbox[5]
+             self.__xmin = nodeCoordinatesX[0]
+             self.__ymin = nodeCoordinatesY[0]
+             self.__zmin = nodeCoordinatesZ[0]
+             self.__xmax = nodeCoordinatesX[-1]
+             self.__ymax = nodeCoordinatesY[-1]
+             self.__zmax = nodeCoordinatesZ[-1]
 
-      self.__dx = (self.__xmax - self.__xmin) / (float)(self.__xcells)
-      self.__dy = (self.__ymax - self.__ymin) / (float)(self.__ycells)
-      self.__dz = (self.__zmax - self.__zmin) / (float)(self.__zcells)
+          self.__dx = (self.__xmax - self.__xmin) / (float)(self.__xcells)
+          self.__dy = (self.__ymax - self.__ymin) / (float)(self.__ycells)
+          self.__dz = (self.__zmax - self.__zmin) / (float)(self.__zcells)
 
 
 
@@ -164,7 +165,7 @@ class VlsvReader(object):
       # Read the xml as string
       (xml_string,) = struct.unpack("%ds" % len(xml_data), xml_data)
       # Input the xml data into xml_root
-      self.__xml_root = ET.fromstring(xml_string)
+      self.__xml_root = ET.fromstring(xml_string.replace("(","_").replace(")",""))
       if self.__fptr.closed:
          fptr.close()
 
@@ -236,8 +237,8 @@ class VlsvReader(object):
             elif datatype == "uint" and element_size == 8:
                data_block_ids = np.fromfile(fptr, dtype = np.uint64, count = vector_size*num_of_blocks)
             else:
-               print "Error! Bad block id data!"
-               print "Data type: " + datatype + ", element size: " + str(element_size)
+               print("Error! Bad block id data!")
+               print("Data type: " + datatype + ", element size: " + str(element_size))
                return
 
             data_block_ids = np.reshape(data_block_ids, (len(data_block_ids),) )
@@ -247,7 +248,7 @@ class VlsvReader(object):
 
       # Check to make sure the sizes match (just some extra debugging)
       if len(data_avgs) != len(data_block_ids):
-         print "BAD DATA SIZES"
+         print("BAD DATA SIZES")
 
       return [data_block_ids, data_avgs]
 
@@ -301,7 +302,7 @@ class VlsvReader(object):
             elif datatype == "uint" and element_size == 8:
                data_block_ids = np.fromfile(fptr, dtype = np.uint64, count = vector_size*num_of_blocks)
             else:
-               print "Error! Bad data type in blocks!"
+               print("Error! Bad data type in blocks!")
                return
 
             data_block_ids = data_block_ids.reshape(num_of_blocks, vector_size)
@@ -311,7 +312,7 @@ class VlsvReader(object):
 
       # Check to make sure the sizes match (just some extra debugging)
       if len(data_avgs) != len(data_block_ids):
-         print "BAD DATA SIZES"
+         print("BAD DATA SIZES")
       # Make a dictionary (hash map) out of velocity cell ids and avgs:
       velocity_cells = {}
       array_size = len(data_avgs)
@@ -357,28 +358,28 @@ class VlsvReader(object):
       ''' Print out a description of the content of the file. Useful
          for interactive usage
       '''
-      print "tag = PARAMETER"
+      print("tag = PARAMETER")
       for child in self.__xml_root:
          if child.tag == "PARAMETER" and "name" in child.attrib:
-            print "   ", child.attrib["name"]
-      print "tag = VARIABLE"
+            print("   ", child.attrib["name"])
+      print("tag = VARIABLE")
       for child in self.__xml_root:
          if child.tag == "VARIABLE" and "name" in child.attrib:
-            print "   ", child.attrib["name"]
-      print "tag = MESH"
+            print("   ", child.attrib["name"])
+      print("tag = MESH")
       for child in self.__xml_root:
          if child.tag == "MESH" and "name" in child.attrib:
-            print "   ", child.attrib["name"]
-      print "Datareducers:"
+            print("   ", child.attrib["name"])
+      print("Datareducers:")
       for name in datareducers:
-         print "   ",name, " based on ", datareducers[name].variables
-      print "Data operators:"
+         print("   ",name, " based on ", datareducers[name].variables)
+      print("Data operators:")
       for name in data_operators:
-         print "   ",name
-      print "Other:"
+         print("   ",name)
+      print("Other:")
       for child in self.__xml_root:
          if child.tag != "PARAMETER" and child.tag != "VARIABLE" and child.tag != "MESH":
-            print "    tag = ", child.tag, " mesh = ", child.attrib["mesh"]
+            print("    tag = ", child.tag, " mesh = ", child.attrib["mesh"])
 
    def check_variable( self, name ):
       ''' Checks if a given variable is in the vlsv reader or a part of the data reducer variables
@@ -443,7 +444,7 @@ class VlsvReader(object):
          if read_single_cellid >= 0:
             self.__read_fileindex_for_cellid()
       if tag == "" and name == "" and tag == "":
-         print "Bad arguments at read"
+         print("Bad arguments at read")
 
       if self.__fptr.closed:
          fptr = open(self.file_name,"rb")
@@ -486,6 +487,11 @@ class VlsvReader(object):
                data = np.fromfile(fptr, dtype=np.uint32, count=vector_size*array_size)
             if datatype == "uint" and element_size == 8:
                data = np.fromfile(fptr, dtype=np.uint64, count=vector_size*array_size)
+            if datatype == "unknown" and element_size == 56:
+               particle_dtype = 'float'
+               element_size = 8
+               vector_size = 7
+               data = np.fromfile(fptr, dtype=particle_dtype, count=vector_size*array_size)
 
             if self.__fptr.closed:
                fptr.close()
@@ -519,7 +525,7 @@ class VlsvReader(object):
                   tmp_vars.append( self.read( i, tag, mesh, "pass", cellid ) )
                output[index] = reducer.operation( tmp_vars , velocity_cell_data, velocity_coordinates )
                index+=1
-               print index,"/",len(cellids)
+               print(index,"/",len(cellids))
             return data_operators[operator](output)
          else:
             tmp_vars = []
@@ -1007,7 +1013,7 @@ class VlsvReader(object):
 
       if len(cells_with_blocks_index) == 0:
          #block data did not exist
-         print "Cell does not have velocity distribution"
+         print("Cell does not have velocity distribution")
          return []
 
       num_of_blocks = np.atleast_1d(blocks_per_cell)[cells_with_blocks_index[0]]
