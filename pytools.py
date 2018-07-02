@@ -1,4 +1,7 @@
 import analysator.filemanagement as filemanagement
+import filemanagement
+import socket, re
+
 # Input current folder's path
 filemanagement.sys.path.insert(0, filemanagement.os.path.dirname(filemanagement.os.path.abspath(__file__)))
 # Input folder paths
@@ -31,4 +34,3 @@ try:
    import miscellaneous
 except ImportError:
    print("Note: Did not import miscellaneous")
-
