@@ -183,7 +183,7 @@ class VlsvReader(object):
       # Read the xml as string
       (xml_string,) = struct.unpack("%ds" % len(xml_data), xml_data)
       # Input the xml data into xml_root
-      self.__xml_root = ET.fromstring(xml_string.replace("(","_").replace(")",""))
+      self.__xml_root = ET.fromstring(xml_string.replace(b"(",b"_").replace(b")",b""))
       if self.__fptr.closed:
          fptr.close()
 
